@@ -108,3 +108,79 @@ Chốt bos cuối:
     - Có thể set trạng thái mới ở bất kỳ đâu trong body của function component mà không cần thông qua this.setState như Class
     - Giải quyết được vấn đề khi cần tracked + updated state trong một function component
     - Việc update state là quá trình replace không phải merge
++================================++++++++++++++++++++++++++++++++++++++
+Kế tiếp, xem sự vi diệu của một hook khác: Effect Hook
+-> Nó là gì???
+    - Cho phép thực hiện phía hiệu ứng trong function component, xảy ra ngay sau khi mount phần từ DOM hoàn thành
+    - Hiệu ứng có thể là:
+        + Sau khi Data Fetching
+        + Sau khi Setup a subscripting
+        + Sau khi Thay đổi thủ công DOM
+-> Phân loại side Effect
+    - Effect không cần dọn dẹp: 
+        + Ví dụ:
+            (1): Yêu cầu network
+            (2): Đột biến thủ công DOM
+            (3): Ghi log
+Tiến hành so sánh cách thực hiện Effect giữa Class và Hook
+        + Trong lớp
+            -> Render không phải là một loại side Effect, đơn giản vì side Effect sẽ xảy ra khi quá trình render hoàn thành.
+Vì vậy, các side Effect trong lớp người ta để trong componentDidMount và componentDidUpdate.
+Trên thực tế, người ta muốn sau  khi render thực thi thì sẽ áp dụng side Effect.
+Tuy nhiên, class component nó không có method làm chuyện đó. Để làm thì cần phải
+add vào cả componentDidMount và componentDidUpdate.
+            => Chốt nãy giờ nói dong dài: Trong class component, để làm được chuyện
+tích hợp side Effect thì cần thông qua 2 component high-level component. Việc này vừa tạo
+cho code dư thừa và thiếu minh bạch.
+        + Effect Hook: thì khác.
+            -> Khi chúng ta gọi nó trong function component, ý bảo React hãy tiến hành công việc đó cho tao, sau khi mày render xong.
+Khi nhận mệnh lệnh, React sẽ tiến hành ghi nhớ function và sẽ gọi ngay khi nó update xong DOM
+Trong ví dụ, chúng ta chỉ đơn giả là update title thông qua API browser.
+Trên thực tế, chúng ta có thể làm nhiều hơn trong body của Effect hook.
+        + Fetching Data
+        + Thực hiện nhiều API khác nè
+
+-> Tại sao useEffect được gọi bên trong component?
+    - Tại vì useEffect cần truy cập đến state/ props của Effect
+    - Không cần API chi tiết để đọc Effect, nó đã bao gồm trong đó.
+    - Hook chỉ lấy các bao đóng của js, không quan tâm React API cụ thể,
+khi Js đã cung cấp giải pháp
+
+-> Có phải Effect sẽ chạy sau mỗi render?
+    - Chính xác là cả lần chạy đầu tiên và mỗi lần re-render
+    - Khi sử dụng Mounting và Updating, chúng ta chưa chắc chắn đc việc render đã OK
+Nhưng khi sử dụng useEffect, chúng ta chắc chắn rằng, nó chỉ xảy ra khi quá trình
+render thật sự hoàn tất.
+
+    - Effect cần dọn dẹp.
+        + Ví dụ:
+            (1): Setup một subscripting đến một vài datasource bên ngoài.
+            Chúng ta cần dọn dẹp để tránh bộ nhớ bị rò rỉ 
+Tiến hành so sánh Hook và React để làm rõ vấn đề.
+        + Class:
+            (1): Vẫn cần 2 phương thức để xử lý là componentDidMount và componentWillUnmount
+            (2): Code vẫn còng kềnh như trường hợp Effect not clean
+        + Hook:
+            (1): Vẫn chỉ cần một function hook: useEffect để xử lý công việc.
+            (2): Tiến hành định nghĩa method: 
+                handleStatusChange -> subscribeToFriendStatus để subscripting khi trạng thái isOnline changed.
+                cleanup -> unsubscribeFromFriendStatus
+-> Tại sao chúng ta return function từ Effect của chúng ta?
+[?]     - Chỉ là một cơ chế dọn dẹp cho Effect dạng option, cho phép thêm/xóa các liên
+kết gần nhau mà vẫn giữ được logic. Chúng làm một phần của hiệu ứng tương tự.
+-> Chính xác thì khi nào React sẽ dọn dẹp một Effect?
+        - React thực hiện dọn dẹp khi một component unmount
+        - Tuy nhiên, theo như trước đây thì Effect sẽ chạy ở mỗi lần render chứ không
+chỉ chạy có một lần, điều này cho thấy React cũng tiến hành dọn dẹp cả cái Effect trước, Trước
+khi chạy Effect kế tiếp.
+[※]Effect không trả về một function named,
+ta chỉ gọi nó với mục đích dọn dẹp. Nhưng, ta có thể tra về một function với mũi 
+tên và gọi bất cứ thứ gì khác từ kết quả trả về.
+=============
+Chốt về useEffect:
+-> Thể hiện một Effect sau khi một component được render
+-> Một vài Effect yêu cầu cleanup thì sẽ trả về một function
+-> Nếu Class được phân ra ở componentDidMount và componentWillUnmount thì useEffect sẽ bao gồm toàn bộ function cleanup
+-> Một Effect không cần cleanup thì không cần return
+-> in-depth: Chuyên sâu hơn về useEffect.
+    =>
