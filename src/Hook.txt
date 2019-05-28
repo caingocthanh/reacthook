@@ -1,2 +1,31 @@
 (1): Tính năng mới của React 16.8, sử dụng trạng thái và những tính năng khác của React
 không cần sử dụng Class trong trường hợp này.
+(2): Khi nâng cấp React from version cũ thì nên upgrade toàn bộ packget hiện có.
+Riêng React Native sẽ hỗ trợ Hook mở phiên bản kế tiếp.
+(3): Hook sinh ra không phải để thay thế Class
+(4): Cho phép tái sử dụng sateful mà không cần fix cấp bật component
+(5): Phân chia một component complex thành những function smaller dựa trên những
+thứ có liên quan (
+    Ex: Cài đặt subscripting
+        Fetching data
+)
+
+================Nhược điểm của React===================
+(1): Tái sử dụng logic sateful giữa các component
+(2): Wrapper hell
+(3): Các thành phần phức tạp trở nên khó hiểu
+blabla...bla=> Ghi nhiều quá, đọc hơi buồn ngủ
+=============LET'S GO=====================Chi tiết về Hook
+- Là một function sử dụng để móc vào state React và tính năng vòng đời sống from component function
+- Không làm việc trong một Class
+- Là function JS
+- React cung cấp một số hook được xây dựng trong React: 
+    + useState.
+    + Effect Hook = useEffect
+- Nguyên tắc của Hook
+    + Gọi ở top level, không gọi trong loop, coditions, function lồng
+    + Gọi từ React function component, không gọi từ function js bình thường
+==========================================
+=========================================
+use Hook state
+=========================================
