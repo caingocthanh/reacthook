@@ -28,4 +28,83 @@ blabla...bla=> Ghi nhiều quá, đọc hơi buồn ngủ
 ==========================================
 =========================================
 use Hook state
+-> Hook là một function cho phép chúng ta móc vào tính năng của React
+-> Trong trường hợp này, ta sử dụng hook sẵn có của React: useState
+-> Mục đích sử dụng hook: useState
+    - Thêm trạng thái react đến function component (stateless)
+    ※ Trước đây, tại các node này không sử dụng được trạng thái.
+    Không chứa trạng thái bên trong, mà được điều khiển thông qua class component parent
+-> Khi nào thì sử dụng Hook: 
+    - Trong component function thì không có "ĐÍT(this)"
+nên không thể gọi hay độc [this.state....] vì vậy ta sử dụng [useState] thay thế
+-> Gọi để làm gì?
+    - Trích suất dữ liệu cái mà do this.state cung cấp trong class
+    - Thông thường nó sẽ biến mất khi ra khỏi function, biến trạng thái vẫn được React bảo toàn
+-> Chúng ta sẽ làm gì để pass qua useState như một argument? 
+    - Có thể có nhiều hơn một đối số
+    - Ở trạng thái này thì nó được xem là trạng thái khởi tạo mới khi function được chạy
+    - Không giống như class, trạng thái không làm một Object mà là:
+        + Là giá trị bất kỳ: number, string,...thứ mà chúng ta cần
+        + Trong ví dụ, ta cần trả về number cho mỗi lần click
+-> useState return cái gì?
+    - Trả về cặp giá trị:
+        (1): Trạng thái hiện tại của count
+        (2): function update state setCount
+    - Đó là lý do tại sao chúng ta ghi theo kiểu: 
+    [count, setCount]=useState()
+Tương đương trong class sẽ là:
+    this.state.count
+    this.setState({})
+-> Làm thế nào để đọc trạng thái
+    - Class: this.state.count
+    - function: {count}
+-> Làm thể nào update state
+    - Class: this.setState({})
+    - function: gọi setCount()
+-> Giải thích về khai báo: const [count, setCount]=useState(0);
+    - count, setCount là đặt tên tùy ý
+    - Return cặp: count và function cập nhật count: setCount
+    - tạo 2 biến, 1 là count, 2 là setCount,
+count thì được set mặc định 0, setCount sẽ tiến hành cập nhật count
+khi có yêu cầu.
+Việc khai báo bên trên thì tương tự như viết thông thường bên dưới (gọi là array destructuring)
+    var updatecount=useState(0);
+    var count=updatecount[0];
+    var setCount=updatecount[1];
+với cách khai báo bên trên, nghĩa đen thì return một array 2 phần từ.
+Ta có thể truy cập vào kết quả return với index của nó.
+-> Làm thế nào tạo ra nhiều state?
+    - Dựa trên việc định nghĩa trạng thái như một pair [something, setsomething], cho phép ta:
+        + Tùy biến những cập state khác nhau.
+        + Update tự do state bất kỳ và bất cứ đâu trong function top-level
+        + Ví dụ, trong một function component có thể có nhiều state
+            function Ex(){
+                const [age, setAge]=useState(32);
+                const [todos, settodos]=useState([{text:'Learn hook'}]);
+            }
+    - Tuy nhiên, trong trường hợp có quá nhiều thứ để tracked, thì việc khai báo
+state có vẻ sẽ dài dòng và cồng kềnh.
+Sloved: 
+    - Cho phép dữ Objects hoặc Array. Vì vậy, ta có thể group các nhóm với nhau.
+-> Không giống như trong class, update trạng thái mà quá trình merge.
+Trong function, việc update là quá trình replace.
 =========================================
+Chốt bos cuối:
+    - Hook là một function để gắn một tính năng của React vào trong một function component
+    - Hook chỉ được sử dụng ở:
+        + function top-level, 
+    - Hook không sử dụng trong: 
+        + class / js function regular
+        + call trong condition
+        + call trong nested function
+    - Để sử dụng một hook của React cần import tên hook từ thư việc react
+    - Hook được khai báo dạng [Array destructuring] tương ứng với kiểu trả về là một cặp giá trị gồm:
+        + Biến lưu trữ trạng thái hiện tại
+        + Method thực thi biến lưu trữ trạng thái.
+    - Trong function component không có object gọi là this. Vì vậy, toàn bộ body của function component sẽ không tồn tại [this]
+    - Việc khai báo hook có thể là một list object, array
+    - Nên hay không nên SPLIT/GROUP khai báo biến tương ứng cho từng trạng thái thì cần xem FAQ để nắm.
+    - Có thể đọc trạng thái hiện tại trực tiếp từ biến lưu trữ trạng thái mà không cần thông qua this.setState như class
+    - Có thể set trạng thái mới ở bất kỳ đâu trong body của function component mà không cần thông qua this.setState như Class
+    - Giải quyết được vấn đề khi cần tracked + updated state trong một function component
+    - Việc update state là quá trình replace không phải merge
