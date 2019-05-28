@@ -1,0 +1,2 @@
+(1): Tính năng mới của React 16.8, sử dụng trạng thái và những tính năng khác của React
+không cần sử dụng Class trong trường hợp này.
