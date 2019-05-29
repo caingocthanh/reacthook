@@ -62,6 +62,7 @@ class FriendStatus extends Component{
             this.handleStatusChange
         );
     }
+    
 
     handleStatusChange(status){
         this.setState({
@@ -77,7 +78,7 @@ class FriendStatus extends Component{
     }
 }
 /**Trường hợp sử dụng useEffect */
-import React, { useState, useEffect } from 'react';
+import React, * as react from 'react';
 
 function FriendStatus(props) {
   const [isOnline, setIsOnline] = useState(null);
@@ -100,7 +101,15 @@ function FriendStatus(props) {
   return isOnline ? 'Online' : 'Offline';
 }
 /**
- * Ví dụ liên quan đến việc Effect with clean
+ * Ví dụ liên quan kết hợp useEffect và useState để theo dõi và cập nhật multiple effect
  */
+
+
+
+
+
+
+
+
 
 export default FriendStatus;
